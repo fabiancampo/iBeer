@@ -11,7 +11,7 @@ import SwiftUI
 struct iBeerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ManufacturersListView()
         }
     }
 }

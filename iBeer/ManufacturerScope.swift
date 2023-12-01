@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum ManufacturerScope {
+    case domestic
+    case imported
+}

@@ -9,38 +9,81 @@ import SwiftUI
 
 struct ManufacturersListView: View {
     @State var isShowingAddView = false
-    @ObservedObject var model = Manufacturer()
+    @EnvironmentObject var manufactuers: Manufacturers
     
+    @State var manufacturers: [Manufacturer] = [Manufacturer(name: "Mahou")]
+    
+    @State var filterSelection = 1
+    @State var search = ""
+    @State var scope: ManufacturerScope = .domestic
+    @State var heartFilled = false
     
     var body: some View {
         
         NavigationStack {
             
-            List(model.manufacturer, id: \.self) { manu in
-                Text(manu)
+            
+            
+            List($manufacturers, id: \.self, editActions: .delete) { $manufacturer in
+                
+             
+                
+                NavigationLink {
+                    ManufacturerDetailsView(name: manufacturer.name)
+                } label: {
+                    
+                   
+                        Image("mahou")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .clipShape(.capsule)
+                    Spacer(minLength: 10)
+                    HStack {
+                        Text(manufacturer.name)
+                        Spacer()
+                        Image(systemName: heartFilled ? "heart" : "heart.fill")
+                            .bold()
+                            .onTapGesture {
+                                heartFilled.toggle()
+                            }
+                       
+                        
+                    }
+                }
                
             }
-            
-            .navigationTitle("Lista de fabricantes")
+           
+         
+            .navigationTitle("Manufacturers")
             .toolbar {
                 Button {
                     isShowingAddView.toggle()
                 } label: {
                     HStack {
                         Image(systemName: "plus.app.fill")
-                        Text("Añadir")
+                        Text("Add")
                         
                     }
                     
                     
                 }
+                
+                
+                
             }
             .sheet(isPresented: $isShowingAddView) {
                 
-                AddManufacturerView(manu: $model.manufacturer, isPresented: $isShowingAddView)
+                AddManufacturerView(manufacturers: $manufacturers, isShowingAddView:  $isShowingAddView)
             }
             
         }
+        .searchable(text: $search, prompt: "Search and filter")
+        .searchScopes($scope, activation: .onSearchPresentation) {
+            Text("Domestic").tag(ManufacturerScope.domestic)
+            Text("Imported").tag(ManufacturerScope.imported)
+        }
+       
+        
         
     }
 }

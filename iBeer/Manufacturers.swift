@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+class Manufacturers: ObservableObject {
+    @Published var manufacturers: [Manufacturer] = [Manufacturer(name: "Mahou")]
+}

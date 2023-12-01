@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+class Beer {
+    var name: String = ""
+}
