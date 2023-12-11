@@ -2,11 +2,7 @@
 //  Beer.swift
 //  iBeer
 //
-//  Created by Fabián Gómez Campo on 28/11/23.
+//  Created by Fabián Gómez Campo on 11/12/23.
 //
 
 import Foundation
-
-class Beer {
-    var name: String = ""
-}
