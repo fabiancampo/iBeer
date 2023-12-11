@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct iBeerApp: App {
+    @StateObject private var manufacturers = Manufacturers()
+    
     var body: some Scene {
         WindowGroup {
             ManufacturersListView()
+                .environmentObject(manufacturers)
         }
     }
 }

@@ -8,28 +8,39 @@
 import SwiftUI
 
 struct AddManufacturerView: View {
+    @ObservedObject var manufacturers: Manufacturers
     
-    @Binding var manufacturers: [Manufacturer]
-    @Binding var isShowingAddView: Bool
-    @State var text: String = ""
-    
+    @State var name: String = ""
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationStack {
             Form {
-                TextField(text: $text, label: {
-                    Text("Escribe...")
+                TextField(text: $name, label: {
+                    Text("Nombre...")
                 })
                 Button {
-                    manufacturers.append(Manufacturer(name: text))
+               
+                    manufacturers.manufacturers.append(Manufacturer(name: name, logo: "", type: .domestic, beers: []))
                     dismiss()
                 } label: {
                     Text("Añadir")
                     
                     
                 }
-                .disabled(text.isEmpty)
+                .disabled(name.isEmpty)
+            }
+            .toolbar {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                    
+                    
+                }
+                
+                
+                
             }
             .navigationTitle("Añadir")
             .navigationBarTitleDisplayMode(.inline)

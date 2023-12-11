@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct ManufacturerDetailsView: View {
+    @ObservedObject var manufacturer: Manufacturer
     
-    var name: String
+    // var name: String
     var body: some View {
         
         List {
-            
             Section {
                 VStack() {
-                    Image("mahou")
+                    Image(manufacturer.logo)
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: 200)
@@ -24,7 +24,6 @@ struct ManufacturerDetailsView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color.clear)
-                
                 
             }
             
@@ -60,6 +59,9 @@ struct ManufacturerDetailsView: View {
     }
 }
 
-#Preview {
-    ManufacturerDetailsView(name: "test")
+struct ManufacturerDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ManufacturerDetailsView(manufacturer: Manufacturer(name: "Mahou", logo: "mahou", type: .domestic, beers: []))
+            
+    }
 }

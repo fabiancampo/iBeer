@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct ManufacturersListView: View {
-    @State var isShowingAddView = false
-    @EnvironmentObject var manufactuers: Manufacturers
+    @EnvironmentObject var manufacturers: Manufacturers
     
-    @State var manufacturers: [Manufacturer] = [Manufacturer(name: "Mahou")]
+    
+    
+    
+    @State var isShowingAddView = false
+  
+    @State var manufacturers2: [Manufacturer2] = [Manufacturer2(name: "Mahou")]
     
     @State var filterSelection = 1
     @State var search = ""
@@ -23,37 +27,39 @@ struct ManufacturersListView: View {
         NavigationStack {
             
             
-            
-            List($manufacturers, id: \.self, editActions: .delete) { $manufacturer in
-                
-             
+            List(manufacturers.manufacturers) { manufacturer in
                 
                 NavigationLink {
-                    ManufacturerDetailsView(name: manufacturer.name)
+                    ManufacturerDetailsView(manufacturer: manufacturer)
                 } label: {
+                    Image(manufacturer.logo)
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .clipShape(.capsule)
                     
-                   
-                        Image("mahou")
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .clipShape(.capsule)
                     Spacer(minLength: 10)
                     HStack {
                         Text(manufacturer.name)
-                        Spacer()
-                        Image(systemName: heartFilled ? "heart" : "heart.fill")
-                            .bold()
-                            .onTapGesture {
-                                heartFilled.toggle()
-                            }
-                       
+                        
+                        if (manufacturer.isFavourited == true) {
+                            Spacer()
+                            Image(systemName: "heart.fill")
+                                .bold()
+                        }
                         
                     }
                 }
-               
+                
+                .swipeActions(edge: .leading) {
+                    Button {
+                        manufacturer.isFavourited.toggle()
+                    } label: {
+                        Label("Add to favourites", systemImage: "heart.fill")
+                    }
+                    .tint(.indigo)
+                }
             }
-           
-         
+            
             .navigationTitle("Manufacturers")
             .toolbar {
                 Button {
@@ -73,11 +79,14 @@ struct ManufacturersListView: View {
             }
             .sheet(isPresented: $isShowingAddView) {
                 
-                AddManufacturerView(manufacturers: $manufacturers, isShowingAddView:  $isShowingAddView)
+                AddManufacturerView(manufacturers: manufacturers)
             }
             
         }
-        .searchable(text: $search, prompt: "Search and filter")
+        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search and filter")
+       
+        
+        
         .searchScopes($scope, activation: .onSearchPresentation) {
             Text("Domestic").tag(ManufacturerScope.domestic)
             Text("Imported").tag(ManufacturerScope.imported)
@@ -89,8 +98,11 @@ struct ManufacturersListView: View {
 }
 
 
-#Preview {
-    ManufacturersListView()
-}
 
+struct ManufacturersListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ManufacturersListView()
+            .environmentObject(Manufacturers())
+    }
+}
 
