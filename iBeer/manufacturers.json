@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Mahou",
+    "logo": "mahou",
+    "type": "Domestic",
+    "beers": [
+      {
+        "name": "Mahou Clásica",
+        "type": "Lager",
+        "alcoholContent": 5,
+        "calorieContent": 150
+      },
+      {
+        "name": "Mahou Maestra",
+        "type": "Craft Beer",
+        "alcoholContent": 7,
+        "calorieContent": 180
+      }
+    ],
+    "isFavourited": true
+  },
+  {
+    "name": "Estrella Damm",
+    "logo": "estrella_damm",
+    "type": "Domestic",
+    "beers": [
+      {
+        "name": "Estrella Damm",
+        "type": "Pilsner Lager",
+        "alcoholContent": 5.4,
+        "calorieContent": 160
+      },
+      {
+        "name": "Inedit",
+        "type": "Witbier",
+        "alcoholContent": 4.8,
+        "calorieContent": 180
+      }
+    ],
+    "isFavourited": false
+  },
+  {
+    "name": "San Miguel",
+    "logo": "san_miguel",
+    "type": "Domestic",
+    "beers": [
+      {
+        "name": "San Miguel Especial",
+        "type": "Pale Lager",
+        "alcoholContent": 5.4,
+        "calorieContent": 140
+      },
+      {
+        "name": "San Miguel 0,0",
+        "type": "Alcohol-Free Beer",
+        "alcoholContent": 0,
+        "calorieContent": 50
+      }
+    ],
+    "isFavourited": true
+  },
+  {
+    "name": "Moritz",
+    "logo": "moritz",
+    "type": "Domestic",
+    "beers": [
+      {
+        "name": "Moritz Original",
+        "type": "Pilsner Lager",
+        "alcoholContent": 5.4,
+        "calorieContent": 160
+      },
+      {
+        "name": "Moritz Epidor",
+        "type": "Double Malt Lager",
+        "alcoholContent": 7.2,
+        "calorieContent": 190
+      }
+    ],
+    "isFavourited": true
+  },
+  {
+    "name": "Alhambra",
+    "logo": "alhambra",
+    "type": "Domestic",
+    "beers": [
+      {
+        "name": "Alhambra Reserva 1925",
+        "type": "Amber Lager",
+        "alcoholContent": 6.4,
+        "calorieContent": 170
+      },
+      {
+        "name": "Alhambra Especial",
+        "type": "Pale Lager",
+        "alcoholContent": 5.4,
+        "calorieContent": 150
+      }
+    ],
+    "isFavourited": false
+  },
+  {
+    "name": "La Zaragozana",
+    "logo": "la_zaragozana",
+    "type": "Domestic",
+    "beers": [
+      {
+        "name": "Ambar Especial",
+        "type": "Vienna Lager",
+        "alcoholContent": 4.8,
+        "calorieContent": 155
+      },
+      {
+        "name": "Ambar Export",
+        "type": "Pilsner Lager",
+        "alcoholContent": 5.2,
+        "calorieContent": 165
+      }
+    ],
+    "isFavourited": true
+  }
+]

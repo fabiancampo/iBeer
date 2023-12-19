@@ -10,49 +10,55 @@ import SwiftUI
 struct ManufacturerDetailsView: View {
     @ObservedObject var manufacturer: Manufacturer
     
+    
     // var name: String
     var body: some View {
         
-        List {
-            Section {
-                VStack() {
-                    Image(manufacturer.logo)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 200)
-                        .clipShape(.capsule)
-                }
-                .frame(maxWidth: .infinity)
-                .listRowBackground(Color.clear)
-                
-            }
-            
-            Section {
-                HStack {
-                    Image("beericon")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                    Text("Cerveza 1")
-                }
-                
-                
-                HStack {
-                    Image(systemName: "mug")
-                    Text("Cerveza 1")
-                }
-            } header: {
-                Text("Categoria 1")
-            }
-            
-            Section {
-                Text("Cerveza 1")
-                Text("Cerveza 2")
-            } header: {
-                Text("Categoria 2")
-            }
-            
-        }
+        var beerTypes: [String] = Manufacturer.calculateBeerTypes(manufacturer: manufacturer)
         
+        
+        NavigationStack {
+            List {
+                
+                Section {
+                    VStack() {
+                        manufacturer.logo!
+                            .resizable()
+                            .scaledToFill()
+                            .frame(maxWidth: 200, minHeight: 200)
+                            .clipShape(.circle)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .listRowBackground(Color.clear)
+                    
+                }
+                ForEach(beerTypes, id: \.self) { beerType in
+                    Section(header: Text(beerType)) {
+                        ForEach(manufacturer.beers) { beer in
+                            if(beer.type == beerType) {
+                                NavigationLink {
+                                    BeerDetailsView(beer: beer)
+                                } label: {
+                                    Image("beericon")
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                
+                                    Spacer(minLength: 10)
+                                    Text(beer.name)
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                            
+               
+            }
+            .navigationTitle(manufacturer.name)
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    
         
         
         
@@ -61,7 +67,7 @@ struct ManufacturerDetailsView: View {
 
 struct ManufacturerDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        ManufacturerDetailsView(manufacturer: Manufacturer(name: "Mahou", logo: "mahou", type: .domestic, beers: []))
+        ManufacturerDetailsView(manufacturer: Manufacturer(name: "Mahou", logo: Image("moritz"), type: .domestic, beers: []))
             
     }
 }

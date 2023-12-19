@@ -19,6 +19,8 @@
 		1FA6BDF92B10C00D0065D0C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FA6BDF82B10C00D0065D0C4 /* Preview Assets.xcassets */; };
 		1FA6BE002B10C0960065D0C4 /* ManufacturerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6BDFF2B10C0960065D0C4 /* ManufacturerDetailsView.swift */; };
 		1FA6BE022B10C0AC0065D0C4 /* BeerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6BE012B10C0AC0065D0C4 /* BeerDetailsView.swift */; };
+		1FEDFB372B2915ED00168AD1 /* InitialData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEDFB362B2915ED00168AD1 /* InitialData.swift */; };
+		1FEDFB392B291CEF00168AD1 /* manufacturers.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FEDFB382B291CEF00168AD1 /* manufacturers.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		1FA6BDF82B10C00D0065D0C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1FA6BDFF2B10C0960065D0C4 /* ManufacturerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManufacturerDetailsView.swift; sourceTree = "<group>"; };
 		1FA6BE012B10C0AC0065D0C4 /* BeerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerDetailsView.swift; sourceTree = "<group>"; };
+		1FEDFB362B2915ED00168AD1 /* InitialData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialData.swift; sourceTree = "<group>"; };
+		1FEDFB382B291CEF00168AD1 /* manufacturers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = manufacturers.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,7 @@
 				1F6D415A2B27C14300635EC8 /* Beer.swift */,
 				1F6D415C2B27C18500635EC8 /* Manufacturer.swift */,
 				1F25092D2B16737E00C3A099 /* Manufacturers.swift */,
+				1FEDFB362B2915ED00168AD1 /* InitialData.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -94,6 +99,7 @@
 				1F2509292B166B5700C3A099 /* Views */,
 				1F25092C2B166CB800C3A099 /* Models */,
 				1FA6BDF52B10C00D0065D0C4 /* Assets.xcassets */,
+				1FEDFB382B291CEF00168AD1 /* manufacturers.json */,
 				1FA6BDF72B10C00D0065D0C4 /* Preview Content */,
 			);
 			path = iBeer;
@@ -165,6 +171,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FEDFB392B291CEF00168AD1 /* manufacturers.json in Resources */,
 				1FA6BDF92B10C00D0065D0C4 /* Preview Assets.xcassets in Resources */,
 				1FA6BDF62B10C00D0065D0C4 /* Assets.xcassets in Resources */,
 			);
@@ -182,6 +189,7 @@
 				1F6D415D2B27C18500635EC8 /* Manufacturer.swift in Sources */,
 				1F6D415B2B27C14300635EC8 /* Beer.swift in Sources */,
 				1F2509302B167AB500C3A099 /* ManufacturerScope.swift in Sources */,
+				1FEDFB372B2915ED00168AD1 /* InitialData.swift in Sources */,
 				1F9F74962B15FDED008DE4C5 /* AddManufacturerView.swift in Sources */,
 				1F37172F2B1694C3009120B2 /* DataController.swift in Sources */,
 				1FA6BDF22B10C00C0065D0C4 /* iBeerApp.swift in Sources */,
@@ -328,6 +336,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -357,6 +366,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

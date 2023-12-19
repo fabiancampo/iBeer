@@ -8,10 +8,14 @@
 import Foundation
 
 class Manufacturers: ObservableObject {
-    @Published var manufacturers2: [Manufacturer2] = [Manufacturer2(name: "Mahou")]
+  
+    @Published var manufacturers: [Manufacturer] = []
     
-    @Published var manufacturers: [Manufacturer] = [ Manufacturer(name: "Mahou", logo: "mahou", type: .domestic, beers: [])]
-    
-    
+    func fetchData() {
         
+    }
+    
 }
+
+
+
