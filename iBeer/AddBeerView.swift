@@ -1,4 +1,13 @@
 //
+//  AddBeerView.swift
+//  iBeer
+//
+//  Created by Fabián Gómez Campo on 20/12/23.
+//
+
+import SwiftUI
+
+//
 //  AddManufacturerView.swift
 //  iBeer
 //
@@ -8,15 +17,17 @@
 import SwiftUI
 import PhotosUI
 
-struct AddManufacturerView: View {
-    @ObservedObject var manufacturersViewModel: ManufacturersViewModel
+struct AddBeerView: View {
+    @ObservedObject var manufacturer: Manufacturer
+    @ObservedObject var mvm: ManufacturersViewModel
     
     @State private var name: String = ""
-    @State private var logoImage: Image?
+    @State private var beerImage: Image?
     @State private var imageSelection: PhotosPickerItem?
-    var types = ["Domestic", "Imported"]
-    @State private var selectedType = "Domestic"
-    
+    @State private var type: String = ""
+    @State private var alcoholContent: Float = 0.0
+    @State private var calorieContent: Int = 0
+
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -25,8 +36,7 @@ struct AddManufacturerView: View {
                 HStack(spacing: 5) {
                     HStack {
                         PhotosPicker(selection: $imageSelection, matching: .images, label: {
-                            // si el usuario no ha seleccionado una imagen, muestra un botón
-                            if (logoImage == nil) {
+                            if (beerImage == nil) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 30))
                                     .foregroundColor(.white)
@@ -36,7 +46,7 @@ struct AddManufacturerView: View {
                                             .fill(.blue)
                                     )
                             }
-                            logoImage?
+                            beerImage?
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 60, height: 60)
@@ -45,49 +55,60 @@ struct AddManufacturerView: View {
                         })
                     }
                     Spacer()
+                    
                     TextField(text: $name, label: {
-                        Text("Manufacturer's name...")
+                        Text("Beer's name...")
                     })
                     .font(.title3)
                     .fontWeight(.bold)
                 }
-                // al cargar la imagen transfierela a la variable
                 .onChange(of: imageSelection) { newItem in
                     Task {
                         if let loaded = try? await newItem?.loadTransferable(type: Image.self) {
-                            logoImage = loaded
+                            beerImage = loaded
                         } else {
                             print("Failed")
                         }
                     }
                 }
                 
-                Picker("Select a type", selection: $selectedType) {
-                    ForEach(types, id: \.self) {
-                        Text($0)
-                    }
+                HStack {
+                    Text("Beer type:")
+                    TextField(text: $type, label: {
+                        Text("Beer's type...")
+                    })
                 }
-                .pickerStyle(.automatic)
+                HStack {
+                    Text("Alcohol content:")
+                    TextField("Enter Float", value: $alcoholContent, format: .number)
+                }
+                HStack {
+                    Text("Calorie content:")
+                    TextField("Enter Float", value: $calorieContent, format: .number)
+                    //formatter: NumberFormatter()
+                }
                 
                 Section {
                     Button {
-                        // se crea todos el objeto y se pasa al viewmodel para que lo añada al array
-                        var manufacturer = Manufacturer(name: name, logo: logoImage!, type: selectedType, beers: [])
+                        if(beerImage == nil) {
+                            beerImage = Image("beericon")
+                        }
                         
-                        manufacturersViewModel.addManufacturer(manufacturer: manufacturer)
-                        
+                        let beer = Beer(name: name, type: type, icon: beerImage!, alcoholContent: alcoholContent, calorieContent: calorieContent)
+                        mvm.addBeer(manufacturer: manufacturer, beer: beer)
                         dismiss()
                     } label: {
-                        Text("Add Manufacturer")
+                        Text("Add Beer")
                     }
                     .disabled(name.isEmpty)
-                    .disabled(logoImage == nil)
+                    .disabled(type.isEmpty)
+                    .disabled(alcoholContent == 0.0)
+                    .disabled(calorieContent == 0)
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                 }
                 .listRowBackground(Color.clear)
             }
-            
             .toolbar {
                 Button {
                     dismiss()
@@ -95,19 +116,17 @@ struct AddManufacturerView: View {
                     Text("Cancel")
                 }
             }
-            .navigationTitle("Add Manufacturer")
+            .navigationTitle("Add Beer")
             .navigationBarTitleDisplayMode(.inline)
             
         }
     }
 }
 
-
-
-struct AddManufacturerView_Previews: PreviewProvider {
+struct AddBeerView_Previews: PreviewProvider {
     static var previews: some View {
-        var manufacturersViewModel = ManufacturersViewModel()
-        AddManufacturerView(manufacturersViewModel: manufacturersViewModel)
+        let manufacturer = Manufacturer(name: "Mahou", logo: Image("mahou"), type: "Domestic", beers: [])
+        AddBeerView(manufacturer: manufacturer, mvm: ManufacturersViewModel())
     }
 }
 

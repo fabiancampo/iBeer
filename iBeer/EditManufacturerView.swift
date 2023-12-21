@@ -1,17 +1,18 @@
 //
-//  AddManufacturerView.swift
+//  EditManufacturerView.swift
 //  iBeer
 //
-//  Created by Fabián Gómez Campo on 28/11/23.
+//  Created by Fabián Gómez Campo on 20/12/23.
 //
 
 import SwiftUI
 import PhotosUI
 
-struct AddManufacturerView: View {
-    @ObservedObject var manufacturersViewModel: ManufacturersViewModel
+struct EditManufacturerView: View {
+    @ObservedObject var manufacturer: Manufacturer
+    @ObservedObject var mvm: ManufacturersViewModel
     
-    @State private var name: String = ""
+    @State private var name: String
     @State private var logoImage: Image?
     @State private var imageSelection: PhotosPickerItem?
     var types = ["Domestic", "Imported"]
@@ -19,13 +20,21 @@ struct AddManufacturerView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    // init necesario para cargar los valores
+    init(manufacturer: Manufacturer, mvm: ManufacturersViewModel) {
+        self.manufacturer = manufacturer
+        self.mvm = mvm
+        self._name = State(initialValue: manufacturer.name)
+        self._logoImage = State(initialValue: manufacturer.logo)
+        self._selectedType = State(initialValue: manufacturer.type)
+    }
+    
     var body: some View {
         NavigationStack {
-            Form {
+            List {
                 HStack(spacing: 5) {
                     HStack {
                         PhotosPicker(selection: $imageSelection, matching: .images, label: {
-                            // si el usuario no ha seleccionado una imagen, muestra un botón
                             if (logoImage == nil) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 30))
@@ -51,7 +60,6 @@ struct AddManufacturerView: View {
                     .font(.title3)
                     .fontWeight(.bold)
                 }
-                // al cargar la imagen transfierela a la variable
                 .onChange(of: imageSelection) { newItem in
                     Task {
                         if let loaded = try? await newItem?.loadTransferable(type: Image.self) {
@@ -61,7 +69,6 @@ struct AddManufacturerView: View {
                         }
                     }
                 }
-                
                 Picker("Select a type", selection: $selectedType) {
                     ForEach(types, id: \.self) {
                         Text($0)
@@ -71,14 +78,17 @@ struct AddManufacturerView: View {
                 
                 Section {
                     Button {
-                        // se crea todos el objeto y se pasa al viewmodel para que lo añada al array
-                        var manufacturer = Manufacturer(name: name, logo: logoImage!, type: selectedType, beers: [])
+                        manufacturer.logo = logoImage
+                        manufacturer.name = name
+                        manufacturer.type = selectedType
                         
-                        manufacturersViewModel.addManufacturer(manufacturer: manufacturer)
-                        
+                        // pasamos los cambios al viewmodel para que actualice el elemento
+                        // en el array principal
+                        mvm.editManufacturer(manufacturer: manufacturer)
                         dismiss()
+                        
                     } label: {
-                        Text("Add Manufacturer")
+                        Text("Save changes")
                     }
                     .disabled(name.isEmpty)
                     .disabled(logoImage == nil)
@@ -86,8 +96,8 @@ struct AddManufacturerView: View {
                     .buttonStyle(.borderedProminent)
                 }
                 .listRowBackground(Color.clear)
+                
             }
-            
             .toolbar {
                 Button {
                     dismiss()
@@ -95,21 +105,16 @@ struct AddManufacturerView: View {
                     Text("Cancel")
                 }
             }
-            .navigationTitle("Add Manufacturer")
+            .navigationTitle("Editing \(manufacturer.name)")
             .navigationBarTitleDisplayMode(.inline)
             
         }
     }
 }
 
-
-
-struct AddManufacturerView_Previews: PreviewProvider {
+struct EditManufacturerView_Previews: PreviewProvider {
     static var previews: some View {
-        var manufacturersViewModel = ManufacturersViewModel()
-        AddManufacturerView(manufacturersViewModel: manufacturersViewModel)
+        var manufacturer = Manufacturer(name: "Mahou", logo: Image("mahou"), type: "Domestic", beers: [])
+        EditManufacturerView(manufacturer: manufacturer, mvm: ManufacturersViewModel())
     }
 }
-
-
-

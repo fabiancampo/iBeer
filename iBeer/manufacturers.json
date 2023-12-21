@@ -2,7 +2,7 @@
   {
     "name": "Mahou",
     "logo": "mahou",
-    "type": "Domestic",
+    "type": "Imported",
     "beers": [
       {
         "name": "Mahou Clásica",
@@ -22,7 +22,7 @@
   {
     "name": "Estrella Damm",
     "logo": "estrella_damm",
-    "type": "Domestic",
+    "type": "Imported",
     "beers": [
       {
         "name": "Estrella Damm",

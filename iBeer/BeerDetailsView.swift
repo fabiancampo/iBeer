@@ -5,35 +5,53 @@
 //  Created by Fabián Gómez Campo on 24/11/23.
 //
 
+
 import SwiftUI
 
 struct BeerDetailsView: View {
     
-    var beer: Beer
+    @ObservedObject var beer: Beer
+    @ObservedObject var mvm: ManufacturersViewModel
+    var index: Int
+    var beerIndex: Int
+    
+    @State var isShowingEditView = false
+    
+    init(beer: Beer, mvm: ManufacturersViewModel, index: Int) {
+        self.mvm = mvm
+        self.beer = beer
+        self.index = index
+        self.beerIndex = mvm.getIndex(beer: beer, index: index)
+        
+    }
     
     var body: some View {
         
-        
         NavigationStack {
-            List {
+            Form {
                 
                 Section {
-                    VStack() {
-                        Image("beericon")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                        
-                        
-                        
-                        
-                        /*  manufacturer.logo!
-                         .resizable()
-                         .scaledToFill()
-                         .frame(maxWidth: 200, minHeight: 200)
-                         .clipShape(.circle) */
+                    
+                    if(beer.icon == Image("beericon")) {
+                        VStack() {
+                            beer.icon
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                            
+                        }
+                        .frame(maxWidth: .infinity)
+                        .listRowBackground(Color.clear)
+                    } else {
+                        VStack() {
+                            beer.icon
+                                .resizable()
+                                .scaledToFill()
+                                .frame(maxWidth: 200, minHeight: 200)
+                                .clipShape(.circle)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .listRowBackground(Color.clear)
                     }
-                    .frame(maxWidth: .infinity)
-                    .listRowBackground(Color.clear)
                     
                 }
                 Section {
@@ -59,23 +77,33 @@ struct BeerDetailsView: View {
                                     .font(.caption)
                             }
                         }
-                        
-                        
-                        
                     }
                 }
-                    
+                
+                Section {
+                    Button {
+                        isShowingEditView.toggle()
+                    } label: {
+                        Text("Edit beer")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(.bordered)
+                }
+                .listRowBackground(Color.clear)
             }
+            
             .navigationTitle(beer.name)
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $isShowingEditView) {
+                EditBeerView(mvm: mvm, index: index, beerIndex: beerIndex)
+            }
         }
-        
-        
-        
-        
     }
 }
 
-#Preview {
-    BeerDetailsView(beer: Beer(name: "Cerveza", type: "Lager", alcoholContent: 0.7, calorieContent: 223))
+struct BeerDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        BeerDetailsView(beer: Beer(), mvm: ManufacturersViewModel(), index: 0)
+    }
 }
+

@@ -9,12 +9,18 @@ import SwiftUI
 
 @main
 struct iBeerApp: App {
-    @StateObject private var manufacturers = Manufacturers()
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject var manufacturersViewModel = ManufacturersViewModel()
     
     var body: some Scene {
         WindowGroup {
-            ManufacturersListView()
-                .environmentObject(manufacturers)
+            ManufacturersListView(manufacturersViewModel: manufacturersViewModel)
+              
+        }
+        .onChange(of: scenePhase) { phase in
+            if phase == .background {
+                manufacturersViewModel.saveAll()
+            }
         }
     }
 }

@@ -8,71 +8,72 @@
 import SwiftUI
 
 struct ManufacturersListView: View {
-    @EnvironmentObject var manufacturers: Manufacturers
-    
-    
-    
-    
+    @ObservedObject var manufacturersViewModel: ManufacturersViewModel
     @State var isShowingAddView = false
-  
-    @State var filterSelection = 1
     @State var searchText = ""
-    @State var scope: ManufacturerScope = .domestic
-    @State var heartFilled = false
     
+   
     var searchResults: [Manufacturer] {
-            if searchText.isEmpty {
-                return manufacturers.manufacturers
-            } else {
-                return manufacturers.manufacturers.filter { $0.name.contains(searchText) }
-            }
+        if searchText.isEmpty {
+            return manufacturersViewModel.manufacturers
+        } else {
+            return manufacturersViewModel.manufacturers.filter { $0.name.contains(searchText) }
         }
+    }
     
     var body: some View {
-        
         NavigationStack {
-               
+            
+            /// manufacturers se dividen en domestic (nacionales) y imported (importados)
             List {
-                ForEach(searchResults, id: \.self.id) { manufacturer in
-                    NavigationLink {
-                                ManufacturerDetailsView(manufacturer: manufacturer)
+                
+                // Primera sección domestic
+                Section(header: Text("Domestic manufacturers")) {
+                    ForEach(searchResults, id: \.self.id) { manufacturer in
+                        if manufacturer.type == "Domestic" {
+                            NavigationLink {
+                                ManufacturerDetailsView(manufacturer: manufacturer, mvm: manufacturersViewModel)
                             } label: {
-                              manufacturer.logo!
+                                manufacturer.logo!
                                     .resizable()
                                     .frame(width: 30, height: 30)
                                     .clipShape(.circle)
                                 Spacer(minLength: 10)
                                 HStack {
                                     Text(manufacturer.name)
-                                    
-                                    if (manufacturer.isFavourited == true) {
-                                        Spacer()
-                                        Image(systemName: "heart.fill")
-                                            .bold()
-                                    }
-                                    
                                 }
                             }
-                    
-                            
-                            .swipeActions(edge: .leading) {
-                                Button {
-                                   
-                                } label: {
-                                    Label("Add to favourites", systemImage: "heart.fill")
-                                }
-                                .tint(.indigo)
                         }
+                    }
+                    .onDelete(perform: manufacturersViewModel.deleteManufacturer)
+                    // cuando eliminamos deslizando, se llama a esta función que recibe el offset
                 }
-                .onDelete { indexSet in
-                    manufacturers.manufacturers.remove(atOffsets: indexSet)
-                }
-                        
-            }
                 
-                    
-            
+                // Segunda sección imported
+                Section(header: Text("Imported manufacturers")){
+                    ForEach(searchResults, id: \.self.id) { manufacturer in
+                        if (manufacturer.type == "Imported") {
+                            NavigationLink {
+                                ManufacturerDetailsView(manufacturer: manufacturer, mvm: manufacturersViewModel)
+                            } label: {
+                                manufacturer.logo!
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .clipShape(.circle)
+                                Spacer(minLength: 10)
+                                HStack {
+                                    Text(manufacturer.name)
+                                }
+                            }
+                        }
+                    }
+                    .onDelete(perform: manufacturersViewModel.deleteManufacturer)
+                }
+            }
             .navigationTitle("Manufacturers")
+            
+            // barra de búsqueda siempre presente
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search")
             .toolbar {
                 Button {
                     isShowingAddView.toggle()
@@ -80,43 +81,21 @@ struct ManufacturersListView: View {
                     HStack {
                         Image(systemName: "plus.app.fill")
                         Text("Add")
-                        
                     }
-                    
-                    
                 }
-                
-                
-                
             }
             .sheet(isPresented: $isShowingAddView) {
-                
-                AddManufacturerView(manufacturers: manufacturers)
+                AddManufacturerView(manufacturersViewModel: manufacturersViewModel)
             }
-            
         }
-        .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search and filter")
-      
-        .searchScopes($scope, activation: .onSearchPresentation) {
-            Text("Domestic").tag(ManufacturerScope.domestic)
-            Text("Imported").tag(ManufacturerScope.imported)
-        }
-        .onAppear {
-            manufacturers.manufacturers.append(contentsOf: Manufacturer.fetchData())
-        }
-       
-        
-        
     }
-        
 }
-
 
 
 struct ManufacturersListView_Previews: PreviewProvider {
     static var previews: some View {
-        ManufacturersListView()
-            .environmentObject(Manufacturers())
+        ManufacturersListView(manufacturersViewModel: ManufacturersViewModel())
+        
     }
 }
 
